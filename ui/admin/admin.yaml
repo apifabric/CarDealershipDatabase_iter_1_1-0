@@ -1,0 +1,321 @@
+about:
+  date: December 19, 2024 05:47:51
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 8
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Car:
+    attributes:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+    - name: dealer_id
+    - name: make
+      required: true
+    - name: model
+      required: true
+    - name: year
+    - name: id
+    description: Represents a car available in the dealership.
+    info_list: Represents a car available in the dealership.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - car_id
+      name: InventoryList
+      resource: Inventory
+    - direction: tomany
+      fks:
+      - car_id
+      name: RepairList
+      resource: Repair
+    - direction: tomany
+      fks:
+      - car_id
+      name: SaleList
+      resource: Sale
+    - direction: tomany
+      fks:
+      - car_id
+      name: ServiceAppointmentList
+      resource: ServiceAppointment
+    - direction: tomany
+      fks:
+      - car_id
+      name: WarrantyList
+      resource: Warranty
+    - direction: toone
+      fks:
+      - dealer_id
+      name: dealer
+      resource: Dealer
+    type: Car
+    user_key: description
+  Customer:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: email
+    - name: phone
+    - name: unpaid_sales_count
+    - name: id
+    description: Represents a customer of the dealership.
+    info_list: Represents a customer of the dealership.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - customer_id
+      name: SaleList
+      resource: Sale
+    - direction: tomany
+      fks:
+      - customer_id
+      name: ShowroomVisitList
+      resource: ShowroomVisit
+    type: Customer
+    user_key: name
+  Dealer:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: address
+    - name: contact_number
+    - name: inventory_limit
+      required: true
+    - name: id
+    description: Represents an individual or company that sells cars.
+    info_list: Represents an individual or company that sells cars.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - dealer_id
+      name: CarList
+      resource: Car
+    type: Dealer
+    user_key: name
+  Employee:
+    attributes:
+    - label: ' first_name*'
+      name: first_name
+      required: true
+      search: true
+      sort: true
+    - name: last_name
+      required: true
+    - name: position
+    - name: email
+    - name: id
+    description: Represents an employee working at the dealership.
+    info_list: Represents an employee working at the dealership.
+    type: Employee
+    user_key: first_name
+  FinanceOption:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: description
+    - name: interest_rate
+      required: true
+    - name: id
+    description: Available finance options for purchasing cars.
+    info_list: Available finance options for purchasing cars.
+    type: FinanceOption
+    user_key: name
+  Insurance:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: policy_details
+    - name: monthly_premium
+      required: true
+    - name: id
+    description: Car insurance details related to dealership offerings.
+    info_list: Car insurance details related to dealership offerings.
+    type: Insurance
+    user_key: name
+  Inventory:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: car_id
+    - name: stock_amount
+      required: true
+    - name: location
+    - name: total_stock
+    description: Contains current stock details of cars in dealership inventory.
+    info_list: Contains current stock details of cars in dealership inventory.
+    tab_groups:
+    - direction: toone
+      fks:
+      - car_id
+      name: car
+      resource: Car
+    type: Inventory
+    user_key: id
+  Repair:
+    attributes:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+    - name: car_id
+    - name: repair_date
+      required: true
+      type: DATETIME
+    - name: cost
+      required: true
+    - name: repair_shop
+    - name: id
+    description: Details repair work done on vehicles.
+    info_list: Details repair work done on vehicles.
+    tab_groups:
+    - direction: toone
+      fks:
+      - car_id
+      name: car
+      resource: Car
+    type: Repair
+    user_key: description
+  Sale:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: car_id
+    - name: customer_id
+    - name: sale_date
+      type: DATETIME
+    - name: amount
+      required: true
+    - name: paid
+      type: Boolean
+    description: Represents a sale transaction of a car to a customer.
+    info_list: Represents a sale transaction of a car to a customer.
+    tab_groups:
+    - direction: toone
+      fks:
+      - car_id
+      name: car
+      resource: Car
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    type: Sale
+    user_key: id
+  ServiceAppointment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: car_id
+    - name: appointment_date
+      required: true
+      type: DATETIME
+    - name: serviced_by
+    - name: notes
+    description: Holds details of service appointments for cars.
+    info_list: Holds details of service appointments for cars.
+    tab_groups:
+    - direction: toone
+      fks:
+      - car_id
+      name: car
+      resource: Car
+    type: ServiceAppointment
+    user_key: id
+  ShowroomVisit:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+    - name: visit_date
+      required: true
+      type: DATETIME
+    - name: notes
+    description: Tracks visits made by potential customers to the showroom.
+    info_list: Tracks visits made by potential customers to the showroom.
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    type: ShowroomVisit
+    user_key: id
+  Warranty:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: car_id
+    - name: coverage_details
+    - name: valid_until
+      type: DATETIME
+    description: Details warranty information of cars sold.
+    info_list: Details warranty information of cars sold.
+    tab_groups:
+    - direction: toone
+      fks:
+      - car_id
+      name: car
+      resource: Car
+    type: Warranty
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'
